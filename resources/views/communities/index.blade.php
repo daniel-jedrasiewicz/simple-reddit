@@ -16,9 +16,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">{{ __('project.community.title.my_communities') }}</div>
-
                     <div class="card-body">
-
                         <div>
 {{--                            <a href="{{ route('communities.create') }}" class="btn btn-warning" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">{{ __('Filtrowanie') }}</a>--}}
                             <a href="{{ route('communities.create') }}" class="btn btn-dark">{{ __('project.community.title.add_community') }}</a>
@@ -39,16 +37,15 @@
                             @forelse($communities as $community)
                                 <tr>
                                     <td> {{ $community->id }} </td>
-                                    <td> {{ $community->name }} </td>
+                                    <td>
+                                        <a class="btn btn-light btn-sm" href="{{ route('communities.show', $community) }}">
+                                            <i class="fa-solid fa-circle-info"></i>{{ $community->name }}</a>
+                                    </td>
                                     <td> {{ $community->description}} </td>
-                                    <td class="project-actions text-right">
+                                    <td class="text-right">
                                         <a class="btn btn-primary btn-sm"
                                            href="{{ route('communities.edit', $community) }}">
                                             <i class="fa-solid fa-pen-to-square"></i> {{ __('global.edit') }}
-                                        </a>
-                                        <a class="btn btn-success btn-sm"
-                                           href="{{ route('communities.show', $community) }}">
-                                            <i class="fa-solid fa-circle-info"></i>{{ __('global.details') }}
                                         </a>
                                         <form class="d-inline" method="POST"
                                               action="{{ route('communities.destroy', $community) }}">

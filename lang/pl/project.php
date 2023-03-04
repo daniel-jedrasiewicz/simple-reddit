@@ -19,4 +19,18 @@ return [
             'edit' => 'Edytuj adres',
         ],
     ],
+
+    'posts' => [
+        'title' => [
+            'add_post' => 'Dodaj Post',
+            'new_community' => 'Nowa społeczność',
+            'my_communities' => 'Moje społecznośći',
+        ],
+        'fields' => [
+            'title' => 'Tytuł',
+            'text' => 'Treść',
+            'url' => 'link (URL)',
+            'image' => 'Zdjęcie',
+        ],
+    ],
 ];
