@@ -70,7 +70,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-success">{{ __('global.save') }}</button>
-                                <a href="{{ route('communities.index') }}" class="btn btn-default">{{ __('global.cancel') }}</a>
+                                <a href="{{ route('communities.index') }}" class="btn btn-light">{{ __('global.cancel') }}</a>
                             </div>
                         </div>
                     </form>

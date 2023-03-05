@@ -25,7 +25,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('project.community.fields.name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" value="{{ $community->name }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" value="{{ $community->name }}">
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -71,7 +71,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-success">{{ __('global.save') }}</button>
-                                <a href="{{ route('communities.index') }}" class="btn btn-default">{{ __('global.cancel') }}</a>
+                                <a href="{{ route('communities.index') }}" class="btn btn-light">{{ __('global.cancel') }}</a>
                             </div>
                         </div>
                     </form>
