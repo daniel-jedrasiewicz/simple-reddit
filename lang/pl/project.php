@@ -11,6 +11,7 @@ return [
             'add_community' => 'Stwórz społeczność',
             'new_community' => 'Nowa społeczność',
             'my_communities' => 'Moje społecznośći',
+            'add_post' => 'Dodaj Post',
         ],
         'fields' => [
             'name' => 'Nazwa',
@@ -25,6 +26,7 @@ return [
             'add_post' => 'Dodaj Post',
             'new_community' => 'Nowa społeczność',
             'my_communities' => 'Moje społecznośći',
+            'edit_post' => 'Edycja Posta',
         ],
         'fields' => [
             'title' => 'Tytuł',

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\User;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Community;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +14,7 @@ class CommunityPostController extends Controller
 
     public function index(Community $community)
     {
-        $posts = $community->posts()->latest('id')->paginate(10);
+//        $posts = $community->posts()->latest('id')->paginate(10);
     }
 
     public function create(Community $community)
@@ -22,28 +24,39 @@ class CommunityPostController extends Controller
 
     public function store(StorePostRequest $request, Community $community)
     {
-        $community->posts()->create($request->validated() + ['user_id' => Auth::id()]);
+        $community->posts()->create($request->validated() + [
+                'user_id' => Auth::id(),
+                'image' => $image ?? null
+            ]);
 
         return redirect()->route('communities.show', $community);
     }
 
-    public function show(string $id)
+    public function show(Community $community, Post $post)
     {
-        //
+        return view('posts.show', compact('community', 'post'));
     }
 
-    public function edit(string $id)
+    public function edit(Community $community, Post $post)
     {
-        //
+        User::checkAuthorized($post->user_id);
+
+        return view('posts.edit', compact('community', 'post'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StorePostRequest $request, Community $community, Post $post)
     {
-        //
+        User::checkAuthorized($post->user_id);
+
+        $post->update($request->validated() + ['user_id' => Auth::id()]);
+
+        return redirect()->route('communities.posts.show', [$community, $post])->with('success', 'Pomyślnie zaktualizowano społeczność');
     }
 
-    public function destroy(string $id)
+    public function destroy(Community $community, Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('communities.show', [$community]);
     }
 }

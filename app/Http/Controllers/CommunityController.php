@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\User;
 use App\Http\Requests\StoreCommunityRequest;
 use App\Http\Requests\UpdateCommunityRequest;
 use App\Models\Community;
@@ -10,9 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CommunityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $communities = Community::where('user_id', Auth::id())->get();
@@ -20,9 +18,6 @@ class CommunityController extends Controller
         return view('communities.index', compact('communities'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $topics = Topic::all();
@@ -30,9 +25,6 @@ class CommunityController extends Controller
         return view('communities.create', compact('topics'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCommunityRequest $request)
     {
         $community = Community::create($request->validated() + ['user_id' => Auth::id()]);
@@ -40,20 +32,17 @@ class CommunityController extends Controller
 
         return redirect()->route('communities.index', $community)->with('success', 'Pomyślnie utworzono społeczność');;
     }
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Community $community)
     {
-        return view('communities.show', compact('community'));
+        $posts = $community->posts()->latest('id')->paginate(10);
+
+        return view('communities.show', compact('community', 'posts'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Community $community)
     {
-        if($community->user_id != Auth::id()) abort('404');
+        User::checkAuthorized($community->user_id);
 
         $topics = Topic::all();
         $community->load('topics');
@@ -61,12 +50,9 @@ class CommunityController extends Controller
         return view('communities.edit', compact('community','topics'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCommunityRequest $request, Community $community)
     {
-        if($community->user_id != Auth::id()) abort('404');
+        User::checkAuthorized($community->user_id);
 
         $community->update($request->validated());
         $community->topics()->sync($request->topics);
@@ -74,12 +60,10 @@ class CommunityController extends Controller
         return redirect()->route('communities.index')->with('success', 'Pomyślnie zaktualizowano społeczność');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Community $community)
     {
-        if($community->user_id != Auth::id()) abort('404');
+        User::checkAuthorized($community->user_id);
+
         $community->delete();
 
         return redirect()->route('communities.index')->with('success', 'Pomyślnie usunięto społeczność');
