@@ -6,7 +6,7 @@ use App\Helpers\User;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Community;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Services\PostsService;
 use Illuminate\Support\Facades\Auth;
 
 class CommunityPostController extends Controller
@@ -22,12 +22,17 @@ class CommunityPostController extends Controller
         return view('posts.create', compact('community'));
     }
 
-    public function store(StorePostRequest $request, Community $community)
+    public function store(StorePostRequest $request, Community $community, PostsService $postsService)
     {
-        $community->posts()->create($request->validated() + [
+        $post = $community->posts()->create($request->validated() + [
                 'user_id' => Auth::id(),
-                'image' => $image ?? null
             ]);
+
+        if ($request->has('image')) {
+            $extenstion = $request->image->extension();
+            $inputName = 'image';
+            $postsService->storeImage($post, $extenstion, $inputName);
+        }
 
         return redirect()->route('communities.show', $community);
     }
@@ -44,11 +49,12 @@ class CommunityPostController extends Controller
         return view('posts.edit', compact('community', 'post'));
     }
 
-    public function update(StorePostRequest $request, Community $community, Post $post)
+    public function update(StorePostRequest $request, Community $community, Post $post, PostsService $postsService)
     {
         User::checkAuthorized($post->user_id);
 
         $post->update($request->validated() + ['user_id' => Auth::id()]);
+        $postsService->updateImage($request, $post);
 
         return redirect()->route('communities.posts.show', [$community, $post])->with('success', 'Pomyślnie zaktualizowano społeczność');
     }
