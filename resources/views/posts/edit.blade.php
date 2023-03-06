@@ -8,7 +8,7 @@
                 <div class="card-header">{{ $community->name }}: {{ __('project.posts.title.edit_post') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('communities.posts.update', [$community, $post]) }}">
+                    <form method="POST" action="{{ route('communities.posts.update', [$community, $post]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -52,7 +52,7 @@
                         <div class="row mb-3">
                             <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('project.posts.fields.image') }}</label>
                             <div class="col-md-6">
-                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ $post->image }}">
+                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
                                 @error('image')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -60,8 +60,19 @@
                                 @enderror
                             </div>
                         </div>
-
-
+                        <div class="row mb-3">
+                            <label for="image" class="col-md-4 col-form-label text-md-end"></label>
+                            <div class="col-md-6">
+                                @if($post->image)
+                                    <img src="{{ $post->image->getFullUrl('thumb_300_200') }}"
+                                         alt="{{ $post->name }}"/>
+                                    <br><br>
+                                @else
+                                    <img src="https://via.placeholder.com/300x200.png?text=300x200">
+                                    <br><br>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
