@@ -39,6 +39,8 @@ class CommunityPostController extends Controller
 
     public function show(Community $community, Post $post)
     {
+        $post->load('comments.user');
+
         return view('posts.show', compact('community', 'post'));
     }
 
@@ -61,6 +63,8 @@ class CommunityPostController extends Controller
 
     public function destroy(Community $community, Post $post)
     {
+        User::checkAuthorized($post->user_id);
+
         $post->delete();
 
         return redirect()->route('communities.show', [$community]);

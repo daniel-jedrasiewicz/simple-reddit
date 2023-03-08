@@ -14,6 +14,12 @@ class Post extends Model implements HasMedia
 
     protected $guarded = ['id'];
 
+
+    public function community()
+    {
+        return $this->belongsTo(Community::class);
+    }
+
     public function getImageAttribute()
     {
         return $this->getMedia('posts')->last();
@@ -29,6 +35,21 @@ class Post extends Model implements HasMedia
             ->crop('crop-center', 100, 100);
         $this->addMediaConversion('thumb_60_60')
             ->crop('crop-center', 60, 60);
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(PostVote::class);
+    }
+
+    public function votesThisWeek()
+    {
+        return $this->hasMany(PostVote::class)->where('post_votes.created_at','>=', now()->subDays(7));
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
     }
 
 }

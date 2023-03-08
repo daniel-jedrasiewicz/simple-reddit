@@ -22,6 +22,9 @@ return [
     ],
 
     'posts' => [
+        'columns' => [
+            'comments' => 'Komentarze',
+        ],
         'title' => [
             'add_post' => 'Dodaj Post',
             'new_community' => 'Nowa społeczność',
@@ -33,6 +36,8 @@ return [
             'text' => 'Treść',
             'url' => 'link (URL)',
             'image' => 'Zdjęcie',
+            'add_comment' => 'Dodaj komentarz',
+            'no_comments' => 'Brak komentarzy'
         ],
     ],
 ];

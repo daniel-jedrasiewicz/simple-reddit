@@ -17,16 +17,38 @@
                             <br><br>
                         @endif
 
-                            @if($post->url != "")
-                                <div class="mb-2">
-                                    <a href="{{ $post->url }}" target="_blank">{{ $post->url }}</a>
-                                </div>
-                            @endif
+                        @if($post->url != "")
+                            <div class="mb-2">
+                                <a href="{{ $post->url }}" target="_blank">{{ $post->url }}</a>
+                            </div>
+                        @endif
 
                         {{ $post->text }}
 
-
                         @auth
+                            <hr/>
+                            <h3>{{ __('project.posts.columns.comments') }}:</h3>
+                            @forelse($post->comments as $comment)
+                                <b> {{ $comment->user->name }}</b>
+                                <br/>
+                                {{ $comment->created_at->diffForHumans() }}
+                                <p class="mt-2"> {{ $comment->comment }}</p>
+                            @empty
+                                {{ __('project.posts.columns.no_comments') }}
+                            @endforelse
+
+                            <hr/>
+                            <form method="POST" action="{{ route('posts.comments.store', $post) }}">
+                                @csrf
+                                {{ __('project.posts.fields.add_comment') }}
+                                <br/>
+                                <textarea class="form-control" name="comment" rows="5"></textarea>
+                                <br/>
+                                <button type="submit"
+                                        class="btn  btn-sm btn-success">{{ __('Dodaj komentarz') }}
+                                </button>
+                            </form>
+
                             @if($post->user_id == auth()->id())
                                 <hr/>
                                 <a class="btn btn-primary btn-sm"

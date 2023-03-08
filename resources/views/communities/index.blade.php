@@ -39,7 +39,7 @@
                                     <td> {{ $community->id }} </td>
                                     <td>
                                         <a class="btn btn-light btn-sm" href="{{ route('communities.show', $community) }}">
-                                            <i class="fa-solid fa-circle-info"></i>{{ $community->name }}</a>
+                                            <i class="fa-solid fa-magnifying-glass"></i> {{ $community->name }}</a>
                                     </td>
                                     <td> {{ $community->description}} </td>
                                     <td class="text-right">
