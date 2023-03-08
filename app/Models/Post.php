@@ -14,6 +14,12 @@ class Post extends Model implements HasMedia
 
     protected $guarded = ['id'];
 
+
+    public function community()
+    {
+        return $this->belongsTo(Community::class);
+    }
+
     public function getImageAttribute()
     {
         return $this->getMedia('posts')->last();

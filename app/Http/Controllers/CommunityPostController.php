@@ -61,6 +61,8 @@ class CommunityPostController extends Controller
 
     public function destroy(Community $community, Post $post)
     {
+        User::checkAuthorized($post->user_id);
+
         $post->delete();
 
         return redirect()->route('communities.show', [$community]);
