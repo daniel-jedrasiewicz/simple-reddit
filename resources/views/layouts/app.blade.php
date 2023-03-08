@@ -83,7 +83,38 @@
     </nav>
 
     <main class="py-4">
-        @yield('content')
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    @yield('content')
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Najnowsze posty</div>
+
+                        <div class="card-body">
+                            @foreach($newestPosts as $post)
+                                <a href="{{ route('communities.posts.show', [$post->community, $post]) }}">{{ $post->title }}</a>
+                                <div class="mt-1">{{ $post->created_at->diffForHumans() }}</div>
+                                <hr/>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header">Najnowsze społeczności</div>
+                        <div class="card-body">
+                            @foreach($newestCommunities as $community)
+                                <a href="{{ route('communities.show', [$community]) }}">{{ $community->name }}</a>
+                                ({{ $community->posts_count }} posty)
+                                <div class="mt-1">{{ $community->created_at->diffForHumans() }}</div>
+                                <hr/>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Community;
+use App\Models\Post;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +24,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
+
+        View::share('newestPosts', Post::with('community')->latest()->take(5)->get());
+        View::share('newestCommunities', Community::withCount('posts')->latest()->take(5)->get());
     }
 }
